@@ -82,5 +82,17 @@ describe('app routes', () => {
         });
       });
   });
+  it('deletes a note', () => {
+    return request(app)
+      .delete(`/api/v1/notes/${note.id}`)
+      .then(res => {
+        expect(res.body).toEqual({
+          _id: expect.any(String),
+          title: 'bulk test title',
+          text: 'bulk test text',
+          __v: 0
+        });
+      });
+  });
 });
  
