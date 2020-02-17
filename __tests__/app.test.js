@@ -69,6 +69,18 @@ describe('app routes', () => {
         ]);
       });
   });
-  it('updates a note')
+  it('updates a note', () => {
+    return request(app)
+      .patch(`/api/v1/notes/${note.id}`)
+      .send({ title: 'Updated Note Title Via Patch Route' })
+      .then(res => {
+        expect(res.body).toEqual({
+          _id: expect.any(String),
+          title: 'Updated Note Title Via Patch Route',
+          text: 'bulk test text',
+          __v: 0
+        });
+      });
+  });
 });
  
