@@ -5,6 +5,7 @@ const app = require('../lib/app');
 const connect = require('../lib/utils/connect');
 const mongoose = require('mongoose');
 const Note = require('../lib/models/Note');
+const User = require('../lib/models/User');
 
 describe('app routes', () => {
   beforeAll(() => {
@@ -16,10 +17,18 @@ describe('app routes', () => {
   });
 
   let note;
+
   beforeEach(async() => {
     note = await Note.create({
       title: 'bulk test title',
       text: 'bulk test text'
+    });
+    
+  });
+  let user;
+  beforeEach(async() => {
+    user = await User.create({
+      user: 'Mickey Mouse'
     });
   });
 
@@ -43,7 +52,7 @@ describe('app routes', () => {
         });
       });
   });
-  it('gets a nte by id', () => {
+  it('gets a note by id', () => {
     return request(app)
       .get(`/api/v1/notes/${note.id}`)
       .then(res => {
@@ -92,6 +101,36 @@ describe('app routes', () => {
           text: 'bulk test text',
           __v: 0
         });
+      });
+  });
+  it('can create a new user', () => {
+    return request(app)
+      .post('/api/v1/users')
+      .send({
+        user: 'Minnie Mouse'
+      });
+  });
+  it('gets a user by id', () => {
+    return request(app)
+      .get(`/api/v1/users/${user._id}`)
+      .then(res => {
+        expect(res.body).toEqual({
+          _id: expect.any(String),
+          notes: expect.any(Array),
+          user: 'Mickey Mouse',
+          __v: 0
+        });
+      });
+  });
+  it('gets all users', () => {
+    return request(app)
+      .get('/api/v1/users')
+      .then(res => {
+        expect(res.body).toEqual([{
+          _id: expect.any(String),
+          user: 'Mickey Mouse',
+          __v: 0
+        }]);
       });
   });
 });
