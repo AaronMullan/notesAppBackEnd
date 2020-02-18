@@ -25,12 +25,12 @@ describe('app routes', () => {
     });
     
   });
-  let user;
-  beforeEach(async() => {
-    user = await User.create({
-      user: 'Mickey Mouse'
-    });
-  });
+  //   let user;
+  //   beforeEach(async() => {
+  //     user = await User.create({
+  //       user: 'Mickey Mouse'
+  //     });
+  //   });
 
   afterAll(() => {
     return mongoose.connection.close();
@@ -101,36 +101,6 @@ describe('app routes', () => {
           text: 'bulk test text',
           __v: 0
         });
-      });
-  });
-  it('can create a new user', () => {
-    return request(app)
-      .post('/api/v1/users')
-      .send({
-        user: 'Minnie Mouse'
-      });
-  });
-  it('gets a user by id', () => {
-    return request(app)
-      .get(`/api/v1/users/${user._id}`)
-      .then(res => {
-        expect(res.body).toEqual({
-          _id: expect.any(String),
-          notes: expect.any(Array),
-          user: 'Mickey Mouse',
-          __v: 0
-        });
-      });
-  });
-  it('gets all users', () => {
-    return request(app)
-      .get('/api/v1/users')
-      .then(res => {
-        expect(res.body).toEqual([{
-          _id: expect.any(String),
-          user: 'Mickey Mouse',
-          __v: 0
-        }]);
       });
   });
 });
